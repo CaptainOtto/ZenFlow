@@ -1,19 +1,23 @@
 {
-  "name": "ZenFlow",
+  "name": "zen-flow",
   "private": true,
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
-    "build": "vite build",
-    "preview": "vite preview",
+    "build:css": "tailwindcss build src/styles.css -o public/css/output.css",
+    "watch:css": "yarn run build:css -- --watch",
+    "dev": "yarn run build:css && vite",
+    "build": "yarn run build:css && vite build",
+    "release": "yarn run build:css && yarn run check && tauri build --release",
+    "preview": "yarn run build:css && vite preview",
     "check": "svelte-check --tsconfig ./tsconfig.json",
-    "tauri": "tauri",
+    "tauri dev": "yarn run build:css && tauri dev",
     "prepare": "husky install"
   },
   "dependencies": {
     "@tauri-apps/api": "^1.4.0",
-    "eslint": "^8.45.0"
+    "eslint": "^8.45.0",
+    "tailwindcss": "^3.3.3"
   },
   "devDependencies": {
     "@sveltejs/vite-plugin-svelte": "^2.0.0",
