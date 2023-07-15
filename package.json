@@ -8,16 +8,20 @@
     "build": "vite build",
     "preview": "vite preview",
     "check": "svelte-check --tsconfig ./tsconfig.json",
-    "tauri": "tauri"
+    "tauri": "tauri",
+    "prepare": "husky install"
   },
   "dependencies": {
-    "@tauri-apps/api": "^1.4.0"
+    "@tauri-apps/api": "^1.4.0",
+    "eslint": "^8.45.0"
   },
   "devDependencies": {
     "@sveltejs/vite-plugin-svelte": "^2.0.0",
     "@tauri-apps/cli": "^1.4.0",
     "@tsconfig/svelte": "^3.0.0",
     "@types/node": "^18.7.10",
+    "husky": "^8.0.3",
+    "lint-staged": "^13.2.3",
     "prettier": "3.0.0",
     "svelte": "^3.54.0",
     "svelte-check": "^3.0.0",
@@ -25,5 +29,8 @@
     "tslib": "^2.4.1",
     "typescript": "^4.9.5",
     "vite": "^4.2.1"
+  },
+  "lint-staged": {
+    "**/*": "prettier --write --ignore-unknown"
   }
 }
