@@ -586,17 +586,8 @@ video {
   }
 }
 
-.mx-auto {
-  margin-left: auto;
-  margin-right: auto;
-}
-
 .h-screen {
   height: 100vh;
-}
-
-.w-full {
-  width: 100%;
 }
 
 .bg-black {
