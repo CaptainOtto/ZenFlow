@@ -9,5 +9,5 @@
         <p class="text-base text-red font-bold">Zen Flow</p>
     </div>
 
-    <TextButton text="Zen Flow" />
+    <TextButton text="Getting Started" />
 </div>

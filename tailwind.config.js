@@ -6,6 +6,10 @@ module.exports = {
       "deep-blue": "#12121B",
       "default-white": "#FFFFFF",
       red: "#FF0000",
+      orange: {
+        200: "#FFB02D",
+        900: "#FF842C",
+      },
     },
     fontSize: {
       sm: "0.8rem",
