@@ -1,9 +1,20 @@
-<script>
-    export let text = 'Button';
+<script lang="ts">
+    export let text: string = 'Button';
+    export let onClick: (() => void) | undefined;
+
+    function handleClick() {
+     if (typeof onClick === 'function') {
+      onClick();
+    }
+
+    console.log('Button clicked');
+  }
   </script>
   
-  <button class="bg-gradient-to-t from-orange-900 to-orange-200  text-default-white font-bold py-2 px-10 rounded-full">
+  <button class="bg-gradient-to-t from-orange-700 to-orange-200 text-white font-bold py-2 px-10 rounded-full hover:from-orange-500 hover:to-orange-200"
+    on:click={handleClick}>
     {text}
   </button>
+  
   
   

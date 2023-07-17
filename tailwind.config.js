@@ -3,12 +3,25 @@ module.exports = {
   darkMode: "class",
   theme: {
     colors: {
-      "deep-blue": "#12121B",
-      "default-white": "#FFFFFF",
-      red: "#FF0000",
+      black: {
+        DEFAULT: "#000000",
+        100: "#212121",
+      },
+      white: {
+        DEFAULT: "#FFFFFF",
+      },
       orange: {
-        200: "#FFB02D",
-        900: "#FF842C",
+        orange: "#ff9800",
+        "orange-50": "#fff3e0",
+        100: "#ffe0b2",
+        200: "#ffcc80",
+        300: "#ffb74d",
+        400: "#ffa726",
+        500: "#ff9800",
+        600: "#fb8c00",
+        700: "#f57c00",
+        800: "#ef6c00",
+        900: "#e65100",
       },
     },
     fontSize: {
@@ -22,4 +35,9 @@ module.exports = {
     },
   },
   plugins: [],
+  variants: {
+    extend: {
+      backgroundColor: ["hover"],
+    },
+  },
 };
