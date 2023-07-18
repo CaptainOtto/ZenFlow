@@ -33,13 +33,19 @@
     "security": {
       "csp": null
     },
+    "systemTray": {
+      "iconPath": "icons/32x32.png",
+      "iconAsTemplate": true
+    },
     "windows": [
       {
         "fullscreen": false,
         "resizable": true,
         "title": "ZenFlow",
         "width": 1280,
-        "height": 720
+        "height": 720,
+        "decorations": true,
+        "center": true
       }
     ]
   }
