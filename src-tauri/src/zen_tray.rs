@@ -11,7 +11,21 @@ pub(crate) enum ZenMenuItem {
 }
 
 // For each TrayMenuItem Enum there must exist a match arm to create the Item.
-pub(crate) fn init_tray_from_vec(zen_tray_item_order: Vec<ZenMenuItem>) -> tauri::SystemTrayMenu {
+pub(crate) fn init_tray() -> tauri::SystemTrayMenu {
+    // Create the order of how you want the items in your tray to be.
+    let zen_tray_item_order: Vec<ZenMenuItem> = vec![
+        ZenMenuItem::NextMini,
+        ZenMenuItem::NextLong,
+        ZenMenuItem::Separator,
+        ZenMenuItem::Skip,
+        ZenMenuItem::Pause,
+        ZenMenuItem::Reset,
+        ZenMenuItem::Separator,
+        ZenMenuItem::Preferences,
+        ZenMenuItem::Separator,
+        ZenMenuItem::Quit,
+    ];
+
     let mut tray_menu = tauri::SystemTrayMenu::new();
     for item_enum in zen_tray_item_order {
         match item_enum {
