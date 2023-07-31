@@ -1,5 +1,9 @@
+use crate::zen_window::{ZenAppHandle, ZenWinType};
+use std::str::FromStr;
+use tauri::SystemTrayEvent;
+
 // All TrayMenuItems are unique so, here represented as a Enum
-pub(crate) enum ZenMenuItem {
+enum ZenMenuItem {
     NextMini,
     NextLong,
     Skip,
@@ -8,6 +12,59 @@ pub(crate) enum ZenMenuItem {
     Preferences,
     Quit,
     Separator,
+}
+
+impl FromStr for ZenMenuItem {
+    type Err = ();
+
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "next_mini" => Ok(ZenMenuItem::NextMini),
+            "next_long" => Ok(ZenMenuItem::NextLong),
+            "skip" => Ok(ZenMenuItem::Skip),
+            "pause" => Ok(ZenMenuItem::Pause),
+            "reset" => Ok(ZenMenuItem::Reset),
+            "preferences" => Ok(ZenMenuItem::Preferences),
+            "quit" => Ok(ZenMenuItem::Quit),
+            "separator" => Ok(ZenMenuItem::Separator),
+            _ => Err(()),
+        }
+    }
+}
+
+pub(crate) trait ZenTray {
+    fn zen_tray_events(&self, event: SystemTrayEvent);
+}
+
+impl ZenTray for tauri::AppHandle {
+    fn zen_tray_events(&self, event: SystemTrayEvent) {
+        match event {
+            SystemTrayEvent::MenuItemClick { id, .. } => {
+                let menu_item = ZenMenuItem::from_str(id.as_str()).unwrap_or_else(|_| {
+                    // Handle invalid input here
+                    panic!("Invalid menu item: {}", id);
+                });
+
+                match menu_item {
+                    ZenMenuItem::NextMini => {}
+                    ZenMenuItem::NextLong => {}
+                    ZenMenuItem::Skip => {
+                        self.show_zen_window(ZenWinType::Skip);
+                    }
+                    ZenMenuItem::Pause => {}
+                    ZenMenuItem::Reset => {}
+                    ZenMenuItem::Preferences => {
+                        self.show_zen_window(ZenWinType::Preferences);
+                    }
+                    ZenMenuItem::Quit => {
+                        std::process::exit(0);
+                    }
+                    ZenMenuItem::Separator => {}
+                }
+            }
+            _ => {}
+        };
+    }
 }
 
 // For each TrayMenuItem Enum there must exist a match arm to create the Item.

@@ -22,5 +22,8 @@ serde_json = "1.0"
 # DO NOT REMOVE!!
 custom-protocol = ["tauri/custom-protocol"]
 
+[profile.dev]
+incremental = true
+
 [build]
-rustflags = ["-C", "link-arg=-fuse-ld=lld"]
+rustflags = ["-C", "link-arg=-fuse-ld=lld", "target-cpu=native", "-j", "4"]
