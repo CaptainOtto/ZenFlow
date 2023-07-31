@@ -5,7 +5,7 @@ mod zen_tray;
 mod zen_window;
 
 use crate::zen_tray::ZenTray;
-use tauri::{Manager, SystemTray, WindowEvent};
+use tauri::SystemTray;
 
 fn main() {
     tauri::Builder::default()
