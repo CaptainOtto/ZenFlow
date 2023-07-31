@@ -36,6 +36,30 @@
     "systemTray": {
       "iconPath": "icons/icon.ico",
       "iconAsTemplate": true
-    }
+    },
+    "windows": [
+      {
+        "label": "Preferences",
+        "title": "ZenFlow - Preferences",
+        "tabbingIdentifier": "Preferences",
+        "width": 800,
+        "height": 600,
+        "center": true,
+        "visible": false,
+        "resizable": false,
+        "url": "src-tauri/entrypoints/preferences.html"
+      },
+      {
+        "label": "Skip",
+        "title": "ZenFlow - Skip",
+        "tabbingIdentifier": "Skip",
+        "width": 800,
+        "height": 600,
+        "center": true,
+        "visible": false,
+        "resizable": false,
+        "url": "index.html"
+      }
+    ]
   }
 }

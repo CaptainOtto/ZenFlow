@@ -15,8 +15,8 @@ trait ToStr {
 impl ToStr for ZenWinType {
     fn to_url(&self) -> &str {
         match self {
-            ZenWinType::Preferences => "index.html",
-            ZenWinType::Skip => "index.html",
+            ZenWinType::Preferences => "/entrypoints/preferences.html",
+            ZenWinType::Skip => "/entrypoints/skip.html",
         }
     }
 
@@ -55,39 +55,18 @@ pub(crate) trait ZenAppHandle {
 impl ZenAppHandle for tauri::AppHandle {
     // Passing in a ZenWinType Enum will create the window.
     fn show_zen_window(&self, zen_win_type: ZenWinType) -> tauri::Window {
-        // Function for creating the new base window
-        let create_new_window = || {
-            let new_window = tauri::WindowBuilder::new(
-                self,
-                zen_win_type.to_str(),
-                tauri::WindowUrl::App(zen_win_type.to_url().into()),
-            )
-            .title(zen_win_type.to_str())
-            .center()
-            .resizable(false)
-            .visible(false)
-            .build()
-            .expect(&format!(
-                "Failed to create {} window",
-                zen_win_type.to_str()
-            ));
-
-            // Necessary clone for using hide in event
-            let window_e_closure = new_window.clone();
-            // Listen for the CloseRequested event on the window.
-            new_window.on_window_event(move |event| match event {
-                WindowEvent::CloseRequested { api, .. } => {
-                    api.prevent_close();
-                    _ = window_e_closure.hide();
-                }
-                _ => {}
-            });
-
-            return new_window;
-        };
-
         let window = tauri::Manager::get_window(self, zen_win_type.to_str())
-            .unwrap_or_else(create_new_window);
+            .expect("Could not find window.");
+
+        let window_e_closure = window.clone();
+        // Listen for the CloseRequested event on the window.
+        window.on_window_event(move |event| match event {
+            WindowEvent::CloseRequested { api, .. } => {
+                api.prevent_close();
+                _ = window_e_closure.hide();
+            }
+            _ => {}
+        });
 
         _ = window.toggle_show_hide();
         _ = window.center();
