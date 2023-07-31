@@ -1,68 +1,48 @@
 // Prevents additional console window on Windows in release, DO NOT REMOVE!!
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 
-use tauri::Manager;
-use tauri::SystemTrayMenuItem;
-use tauri::{CustomMenuItem, SystemTray, SystemTrayEvent, SystemTrayMenu};
+use tauri::{SystemTray, SystemTrayEvent};
 
-// Learn more about Tauri commands at https://tauri.app/v1/guides/features/command
-#[tauri::command]
-fn greet(name: &str) -> String {
-    format!("Hello, {}! You've been greeted from Rust!", name)
-}
+mod zen_window;
+use zen_window::{ZenWinType, ZenWindow};
+
+mod zen_tray;
+use zen_tray::{init_tray_from_vec, ZenMenuItem};
 
 fn main() {
-    let quit = CustomMenuItem::new("quit".to_string(), "Quit");
-    let hide = CustomMenuItem::new("hide".to_string(), "Hide");
-    let show = CustomMenuItem::new("show".to_string(), "Show");
-    let tray_menu = SystemTrayMenu::new()
-        .add_item(quit)
-        .add_native_item(SystemTrayMenuItem::Separator)
-        .add_item(hide)
-        .add_native_item(SystemTrayMenuItem::Separator)
-        .add_item(show);
+    // Create the order of how you want the items in your tray to be.
+    // Maybe move this to zen_tray.rs?
+    let zen_tray_item_order: Vec<ZenMenuItem> = vec![
+        ZenMenuItem::NextMini,
+        ZenMenuItem::NextLong,
+        ZenMenuItem::Separator,
+        ZenMenuItem::Skip,
+        ZenMenuItem::Pause,
+        ZenMenuItem::Reset,
+        ZenMenuItem::Separator,
+        ZenMenuItem::Preferences,
+        ZenMenuItem::Separator,
+        ZenMenuItem::Quit,
+    ];
+
+    // Init the tray from the order list above.
+    let tray_menu = init_tray_from_vec(zen_tray_item_order);
 
     tauri::Builder::default()
-        .invoke_handler(tauri::generate_handler![greet])
         .system_tray(SystemTray::new().with_menu(tray_menu))
         .on_system_tray_event(|app, event| match event {
-            SystemTrayEvent::LeftClick {
-                position: _,
-                size: _,
-                ..
-            } => {
-                println!("system tray received a left click");
-            }
-            SystemTrayEvent::RightClick {
-                position: _,
-                size: _,
-                ..
-            } => {
-                println!("system tray received a right click");
-            }
-            SystemTrayEvent::DoubleClick {
-                position: _,
-                size: _,
-                ..
-            } => {
-                println!("system tray received a double click");
-            }
+            // Can we somehow move this to zen_tray.rs?
             SystemTrayEvent::MenuItemClick { id, .. } => match id.as_str() {
                 "quit" => {
                     std::process::exit(0);
                 }
-                "hide" => {
-                    let window = app.get_window("main").unwrap();
-                    window.hide().unwrap();
-                }
-                "show" => {
-                    let window = app.get_window("main").unwrap();
-                    window.show().unwrap();
+                "preferences" => {
+                    let _window = app.get_zen_window(ZenWinType::Preferences);
                 }
                 _ => {}
             },
             _ => {}
         })
         .run(tauri::generate_context!())
-        .expect("error while running tauri application");
+        .expect("error while building tauri application");
 }
